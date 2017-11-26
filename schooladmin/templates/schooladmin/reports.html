@@ -1,0 +1,53 @@
+{% extends "schooladmin/base.html" %}
+
+{% block content %}
+<h1>レポート</h1>
+<form action="" method="POST">
+{% csrf_token %}
+対象月：&nbsp;{{ form.target_month  }}&nbsp;<input type="submit" value="変更">
+</form>
+<p>
+<h2>ジャンルと性別別</h2>
+<table style="border-collapse: collapse;">
+  <tr>
+    <th style="border: 1px solid #000; padding: 8px;">ジャンル</th>
+    <th style="border: 1px solid #000; padding: 8px;">性別</th>
+    <th style="border: 1px solid #000; padding: 8px;">レッスン数</th>
+    <th style="border: 1px solid #000; padding: 8px;">受講者数</th>
+    <th style="border: 1px solid #000; padding: 8px;">売り上げ</th>
+  </tr>
+  {% for report1 in report_by_genre_sex %}
+  <tr>
+      <td style="border: 1px solid #000; padding: 8px;">{{ report1.genre }}</td>
+      <td style="border: 1px solid #000; padding: 8px;">{{ report1.sex  }}</td>
+      <td style="border: 1px solid #000; padding: 8px;">{{ report1.lesson_count }}</td>
+      <td style="border: 1px solid #000; padding: 8px;">{{ report1.user_count }}</td>
+      <td style="border: 1px solid #000; padding: 8px;">{{ report1.sales }}</td>
+  </tr>
+  {% endfor %}
+</table>
+</p>
+<p>
+<h2>ジャンルと年齢層別</h2>
+<table style="border-collapse: collapse;">
+  <tr>
+    <th style="border: 1px solid #000; padding: 8px;">ジャンル</th>
+    <th style="border: 1px solid #000; padding: 8px;">性別</th>
+    <th style="border: 1px solid #000; padding: 8px;">年齢層別</th>
+    <th style="border: 1px solid #000; padding: 8px;">レッスン数</th>
+    <th style="border: 1px solid #000; padding: 8px;">受講者数</th>
+    <th style="border: 1px solid #000; padding: 8px;">売り上げ</th>
+  </tr>
+  {% for report2 in report_by_genre_sex_age %}
+  <tr>
+      <td style="border: 1px solid #000; padding: 8px;">{{ report2.genre }}</td>
+      <td style="border: 1px solid #000; padding: 8px;">{{ report2.sex }}</td>
+      <td style="border: 1px solid #000; padding: 8px;">{{ report2.age }}</td>
+      <td style="border: 1px solid #000; padding: 8px;">{{ report2.lesson_count }}</td>
+      <td style="border: 1px solid #000; padding: 8px;">{{ report2.user_count }}</td>
+      <td style="border: 1px solid #000; padding: 8px;">{{ report2.sales }}</td>
+  </tr>
+  {% endfor %}
+</table>
+</p>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "schooladmin/base.html" %}
+
+{% block content %}
+
+<h1>メニュー</h1>
+<p>
+<a href="{% url 'users_list' %}">顧客一覧</a>
+<br>
+<a href="{% url 'lesson_records' %}">レッスン受講記録</a>
+<br>
+<a href="{% url 'invoices_list' %}">月別請求一覧</a>
+<br>
+<a href="{% url 'reports' %}">レポート</a>
+</p>
+
+{% endblock %}

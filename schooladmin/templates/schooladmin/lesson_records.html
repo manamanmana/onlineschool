@@ -1,0 +1,31 @@
+{% extends "schooladmin/base.html" %}
+
+{% block content %}
+<h1>レッスン受講記録一覧</h1>
+<table style="border-collapse: collapse;">
+  <tr>
+    <th style="border: 1px solid #000; padding: 8px;">ID</th>
+    <th style="border: 1px solid #000; padding: 8px;">受講者</th>
+    <th style="border: 1px solid #000; padding: 8px;">ジャンル</th>
+    <th style="border: 1px solid #000; padding: 8px;">受講日</th>
+    <th style="border: 1px solid #000; padding: 8px;">受講時間</th>
+    <th style="border: 1px solid #000; padding: 8px;">支払金額</th>
+    <th style="border: 1px solid #000; padding: 8px;">&nbsp;</th>
+  </tr>
+  {% for record in records %}
+  <tr>
+    <td style="border: 1px solid #000; padding: 8px;">{{ record.id }}</td>
+    <td style="border: 1px solid #000; padding: 8px;">{{ record.user }}</td>
+    <td style="border: 1px solid #000; padding: 8px;">{{ record.genre }}</td>
+    <td style="border: 1px solid #000; padding: 8px;">{{ record.attended_date|date:"Y-m-d" }}</td>
+    <td style="border: 1px solid #000; padding: 8px;">{{ record.school_hours }}</td>
+    <td style="border: 1px solid #000; padding: 8px;">{{ record.payment }}</td>
+    <td style="border: 1px solid #000; padding: 8px;">
+        <a href="{% url 'lesson_record_edit' record.id %}">編集</a> 
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+<br>
+<a href="{% url 'lesson_record_create' %}">新規追加</a>
+{% endblock %}

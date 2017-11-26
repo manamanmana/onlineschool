@@ -1,0 +1,12 @@
+{% extends "schooladmin/base.html" %}
+
+{% block content %}
+<h1>顧客追加</h1>
+<form action="/schooladmin/users/create" method="POST">
+{% csrf_token %}
+{{ form.as_p  }}
+<p>
+  <input type="submit" value="登録">
+</p>
+</form>
+{% endblock %}

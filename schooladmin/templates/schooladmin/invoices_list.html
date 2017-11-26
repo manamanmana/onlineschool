@@ -1,0 +1,29 @@
+{% extends "schooladmin/base.html" %}
+
+{% block content %}
+<h1>請求一覧</h1>
+<form action="" method="POST">
+{% csrf_token %}
+請求月：&nbsp;{{ form.target_month }}&nbsp;<input type="submit" value="変更">
+</form>
+<p>
+<table style="border-collapse: collapse;">
+  <tr>
+    <th style="border: 1px solid #000; padding: 8px;">顧客ID</th>
+    <th style="border: 1px solid #000; padding: 8px;">顧客名</th>
+    <th style="border: 1px solid #000; padding: 8px;">ジャンル</th>
+    <th style="border: 1px solid #000; padding: 8px;">合計レッスン数</th>
+    <th style="border: 1px solid #000; padding: 8px;">請求金額</th>
+  </tr>
+  {% for invoice in invoices %}
+  <tr>
+    <td style="border: 1px solid #000; padding: 8px;">{{ invoice.user_id }}</td>
+    <td style="border: 1px solid #000; padding: 8px;">{{ invoice.user_name }}</td>
+    <td style="border: 1px solid #000; padding: 8px;">{{ invoice.genre }}</td>
+    <td style="border: 1px solid #000; padding: 8px;">{{ invoice.lesson_count }} レッスン</td>
+    <td style="border: 1px solid #000; padding: 8px;">{{ invoice.invoice }}円</td>
+  </tr>
+  {% endfor %}
+</table>
+</p>
+{% endblock %}
