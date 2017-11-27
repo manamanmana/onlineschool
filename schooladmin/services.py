@@ -3,7 +3,7 @@ import datetime
 
 ## User model related operations
 def get_all_users():
-    return User.objects.all()
+    return User.objects.all().iterator()
 
 def add_a_user(new_user_data):
     new_user = User(
@@ -27,7 +27,7 @@ def update_a_user(user_id, modified_user_data):
 def get_all_lesson_records():
      lesson_records = LessonRecord.objects.all().order_by('attended_date')
      result = []
-     for record in lesson_records:
+     for record in lesson_records.iterator():
         row = {
             'id': record.id,
             'user': record.user.name,
@@ -79,7 +79,7 @@ def calc_mater_charge_of_the_date(user_id, genre_id, attended_date, school_hours
     ## Get accumulated school_hours and payments by previous
     accum_school_hours_by_prev = 0
     
-    for record in lesson_records_by_prev:
+    for record in lesson_records_by_prev.iterator():
         accum_school_hours_by_prev = accum_school_hours_by_prev + record.school_hours
     accum_payments_by_prev = _calc_mater_charge(accum_school_hours_by_prev, genre_id)
 
@@ -98,7 +98,7 @@ def _calc_mater_charge(accum_school_hours, genre_id):
 
     mater_rates = MaterRate.objects.filter(
             genre__id=genre_id).order_by('min_mater_rate_apply_amount')
-    for rate in mater_rates:
+    for rate in mater_rates.iterator():
         if accum_school_hours > rate.min_mater_rate_apply_amount and accum_school_hours <= rate.max_mater_rate_apply_amount:
             accum_payments = accum_payments + (accum_school_hours - rate.min_mater_rate_apply_amount) * rate.amount_by_hour
         elif accum_school_hours > rate.max_mater_rate_apply_amount:
@@ -155,7 +155,7 @@ def _calc_invoice_row_value(user, lesson_records):
     invoice = 0           # 請求金額
     total_school_hours = dict()  # 請求金額に基本料金追加の為 ジャンル毎受講時間
     
-    for record in lesson_records:
+    for record in lesson_records.iterator():
         genre_set.add(record.genre.name) # Uniq genre name
         lesson_count = lesson_count + 1  # Accumulate lesson count
         # Only mater charge
@@ -206,7 +206,7 @@ def get_sales_report_by_genre_sex_for_month(month):
     genres = Genre.objects.all()
     # Aggregate the report by each genre
     results = []
-    for genre in genres:
+    for genre in genres.iterator():
         for sex in SEX_LIST:
             row = _report_by_genre_sex_row(genre, sex, month, next_month)
             results.append(row)
@@ -232,7 +232,7 @@ def _calc_report_row_by_genre_sex(genre, sex, lesson_records):
     sales = 0            # 売上累積用
     total_school_hours = dict() # 請求金額に基本料金追加の為 ジャンル＋ユーザ毎受講時間
 
-    for record in lesson_records:
+    for record in lesson_records.iterator():
         lesson_count = lesson_count + 1 # Accumulate lesson count
         user_id_set.add(record.user.id) # Uniq user_id
         # Only mater charge
@@ -283,7 +283,7 @@ def get_sales_report_by_genre_sex_age_for_month(month):
     genres = Genre.objects.all()
     # Aggregate the report by each genre
     results = []
-    for genre in genres:
+    for genre in genres.iterator():
         for sex in SEX_LIST:
             for age in AGE_LIST:
                 row = _report_by_genre_sex_age_row(genre, sex, age, month, next_month)
@@ -312,7 +312,7 @@ def _calc_report_row_by_genre_sex_age(genre, sex, age, lesson_records):
     sales = 0           # 売上累積用
     total_school_hours = dict() # 請求金額に基本料金追加の為 ジャンル＋ユーザ毎受講時間
 
-    for record in lesson_records:
+    for record in lesson_records.iterator():
         lesson_count = lesson_count + 1 # Accumulate lesson count
         user_id_set.add(record.user.id) # Uniq user_id
         # Only mater charge
